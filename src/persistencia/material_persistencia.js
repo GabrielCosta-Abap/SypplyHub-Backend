@@ -5,14 +5,14 @@ module.exports = {
     salvar_material: async (material) => {
         const client = await pool.connect();
         let query = ''
-        let values = [material.name, material.quantity, material.um, material.price, material.id]
+        let values = [material.name, material.quantity, material.um, material.price, material.neededQuantity, material.id]
         try {
             
             if (material.id) {
-                query = `UPDATE materials SET name=$1, quantity=$2, um=$3, price=$4 WHERE id = $5 RETURNING *`
+                query = `UPDATE materials SET name=$1, quantity=$2, um=$3, price=$4, neededquantity=$5 WHERE id = $6 RETURNING *`
             }else{
-                query = `INSERT INTO materials (name,quantity,um,price) VALUES ($1, $2, $3, $4) RETURNING *`
-                values.pop(4)
+                query = `INSERT INTO materials (name,quantity,um,price, neededquantity) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+                values.pop(5)
             }
 
             const result = await client.query(query, values);
@@ -23,8 +23,6 @@ module.exports = {
                 throw new Error('Erro ao salvar dados!')
             }
 
-            client.release();
-            
         } catch (error) {
             throw new Error(error.message);
         } finally {
@@ -39,8 +37,10 @@ module.exports = {
 
         try {
             
+            console.log('chegou na query')
             query = `DELETE FROM materials WHERE id=$1 RETURNING *`
             const result = await client.query(query, [id]);
+            console.log('passou da query')
             
             if (result.rows.length > 0) {
                 return result.rows

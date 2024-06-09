@@ -43,7 +43,6 @@ module.exports = {
         let id = req.params.id
         
         try {
-            console.log()
             await materialNegocio.deletar_material(id)
             
             if (id) {

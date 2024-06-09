@@ -21,8 +21,6 @@ module.exports = {
                 throw new Error('Credenciais inválidas!')
             }
 
-            // client.release();
-            
         } catch (error) {
             throw new Error(error.message);
         } finally {
