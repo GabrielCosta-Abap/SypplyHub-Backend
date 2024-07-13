@@ -86,4 +86,40 @@ module.exports = {
 
     },
 
+    atualiza_materiais: async (materiais) => {
+        const client = await pool.connect();
+        try {
+            // Inicia uma transação
+            await client.query('BEGIN');
+            const results = [];
+    
+            for (const material of materiais) {
+                let query = '';
+                let values = [material.name, material.quantity, material.um, material.price, material.neededquantity, material.id];
+
+                query = `UPDATE materials SET name=$1, quantity=$2, um=$3, price=$4, neededquantity=$5 WHERE id=$6 RETURNING *`;
+    
+                const result = await client.query(query, values);
+                if (result.rows.length > 0) {
+                    results.push(result.rows[0]);
+                } else {
+                    throw new Error('Erro ao salvar dados!');
+                }
+            }
+    
+            // Confirma a transação
+            await client.query('COMMIT');
+            return results;
+    
+        } catch (error) {
+            // Desfaz a transação em caso de erro
+            await client.query('ROLLBACK');
+            throw new Error(error.message);
+        } finally {
+            // Libera a conexão
+            await client.release();
+        }
+    }
+    
+
 }

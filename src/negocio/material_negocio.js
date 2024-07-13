@@ -3,7 +3,7 @@ const materialPersistence = require('../persistencia/material_persistencia.js')
 module.exports = {
     
     salvar_material: async (material)=>{
-
+        
         if (!material.name
         ||  !material.quantity
         ||  !material.um
@@ -59,5 +59,17 @@ module.exports = {
           
         }
     },
+
+    atualiza_materiais: async (materiais) => {
+        try {
+	  
+            return await materialPersistence.atualiza_materiais(materiais);
+          
+          } catch (error) {
+
+            throw new Error('Erro: ' + error.message);
+          
+        }
+    }
 
 }

@@ -15,6 +15,7 @@ module.exports = {
             console.log('passou da query')
             console.log(result.rows)
             if (result.rows.length > 0) {
+                console.log('entrou no if')
                 return result.rows
             } else {
                 throw new Error('Nenhum material encontrado!')

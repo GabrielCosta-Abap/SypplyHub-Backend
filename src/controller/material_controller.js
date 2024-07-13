@@ -55,4 +55,22 @@ module.exports = {
     
     },
 
+    atualiza_materiais: async (req, res) =>{
+
+        let materiais = req.body
+
+        try {
+            
+            materiais = await materialNegocio.atualiza_materiais(materiais)
+                
+            if (materiais) {
+                res.status(200).json(materiais)
+            }
+        
+        } catch (error) {
+            res.status(401).send(error.message);
+        }
+
+    }
+
 }

@@ -9,6 +9,7 @@ const routes = express.Router()
 routes.post('/login', controllerLogin.login)
 
 routes.post('/material', controllerMaterial.salvar_material)
+routes.put('/material', controllerMaterial.atualiza_materiais)
 routes.get('/material', controllerMaterial.listar_materiais)
 routes.delete('/material/:id', controllerMaterial.deletar_material)
 
